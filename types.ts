@@ -1,18 +1,17 @@
-
-
 export interface Product {
-    id: string;
-   
-    name: string;
-    price: string;
-    isFeatured: boolean;
-   
-    
-    images: Image[]
+  id: string;
+
+  name: string;
+  price: string;
+  isFeatured: boolean;
+
+  Image: Image[];
 }
 
 export interface Image {
-    id: string;
-    url: string;
+  id: string;
+  productId: string;
+  url: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
-
