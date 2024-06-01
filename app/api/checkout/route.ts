@@ -13,10 +13,8 @@ export async function OPTIONS() {
   return NextResponse.json({}, { headers: corsHeaders });
 }
 
-export async function POST(
-  req: Request,
-  { params }: { params: { storeId: string } }
-) {
+export async function POST(req: Request) {
+  console.log("jj");
   const { productIds } = await req.json();
 
   if (!productIds || productIds.length === 0) {
@@ -32,7 +30,7 @@ export async function POST(
   });
 
   const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
-
+  console.log(line_items);
   products.forEach((product) => {
     line_items.push({
       quantity: 1,
@@ -49,9 +47,9 @@ export async function POST(
   const order = await prismadb.order.create({
     data: {
       isPaid: false,
-      orderItems: {
+      OrderItem: {
         create: productIds.map((productId: string) => ({
-          product: {
+          Product: {
             connect: {
               id: productId,
             },
@@ -61,24 +59,30 @@ export async function POST(
     },
   });
 
-  const session = await stripe.checkout.sessions.create({
-    line_items,
-    mode: "payment",
-    billing_address_collection: "required",
-    phone_number_collection: {
-      enabled: true,
-    },
-    success_url: `${process.env.FRONTEND_STORE_URL}/cart?success=1`,
-    cancel_url: `${process.env.FRONTEND_STORE_URL}/cart?cancelled=1`,
-    metadata: {
-      orderId: order.id,
-    },
-  });
+  console.log("order");
 
-  return NextResponse.json(
-    { url: session.url },
-    {
-      headers: corsHeaders,
-    }
-  );
+  try {
+    const session = await stripe.checkout.sessions.create({
+      line_items,
+      mode: "payment",
+      billing_address_collection: "required",
+      phone_number_collection: {
+        enabled: true,
+      },
+      success_url: `${process.env.FRONTEND_URL}/cart?success=1`,
+      cancel_url: `${process.env.FRONTEND_URL}/cart?cancelled=1`,
+      metadata: {
+        orderId: order.id,
+      },
+    });
+
+    return NextResponse.json(
+      { url: session.url },
+      {
+        headers: corsHeaders,
+      }
+    );
+  } catch (err) {
+    console.log("err", err);
+  }
 }
