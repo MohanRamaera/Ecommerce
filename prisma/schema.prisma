@@ -45,6 +45,8 @@ model Product {
   updatedAt  DateTime    @default(now())
   Image      Image[]
   OrderItem  OrderItem[]
+  categoryId String // Foreign Key to Category
+  category   Category    @relation("CategoryToProduct", fields: [categoryId], references: [id])
 }
 
 model User {
@@ -54,6 +56,28 @@ model User {
   role     ROLE    @default(USER)
   password String
   Order    Order[]
+}
+
+model Category {
+  id String @id @default(uuid())
+
+  billboardId String // Foreign Key to Billboard
+  billboard   Billboard @relation(fields: [billboardId], references: [id])
+  name        String
+  products    Product[] @relation("CategoryToProduct")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([billboardId])
+}
+
+model Billboard {
+  id         String     @id @default(uuid())
+  label      String
+  imageUrl   String
+  categories Category[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 }
 
 enum ROLE {
