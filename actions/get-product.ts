@@ -12,3 +12,5 @@ export const getProduct = async (productId: string) => {
 
   return product;
 };
+
+

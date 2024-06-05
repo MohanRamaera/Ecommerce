@@ -1,3 +1,6 @@
+import getBillboard from "@/actions/get-billboard";
+import getProducts from "@/actions/get-products";
+import Billboard from "@/components/billboard";
 import Navbar from "@/components/navbar";
 import Container from "@/components/ui/container";
 import ProductList from "@/components/ui/product-list";
@@ -6,7 +9,8 @@ import prismadb from "@/lib/prismadb";
 export const revalidate = 0;
 
 const HomePage = async () => {
-  const billboard = await getBillboard("df0e09f1-ec53-4f56-96b8-6414c467f7af");
+  const products=await getProducts()
+  const billboard = await getBillboard('60322adf-9b74-4db4-bd61-f0a01ef60b2a');
 
   return (
     <>

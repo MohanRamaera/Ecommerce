@@ -50,15 +50,10 @@ export async function POST(
 
 export async function GET(
   req: Request,
-  { params }: { params: { storeId: string } }
 ) {
   try {
     const { searchParams } = new URL(req.url);
     const isFeatured = searchParams.get("isFeatured");
-
-    if (!params.storeId) {
-      return new NextResponse("Store Id is required", { status: 400 });
-    }
 
     const products = await prismadb.product.findMany({
       where: {
