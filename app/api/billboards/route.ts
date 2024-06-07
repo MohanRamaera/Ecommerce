@@ -53,10 +53,15 @@ export async function GET(
 
 ) {
     try {
+
+        console.log("--here",req)
       
         const billboards = await prismadb.billboard.findMany({})
+        console.log(billboards)
 
         return NextResponse.json(billboards);
+
+        
 
     } catch (err) {
         console.log(`[BILLBOARDS_GET] ${err}`);

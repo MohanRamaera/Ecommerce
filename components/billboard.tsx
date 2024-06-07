@@ -1,8 +1,9 @@
 import {Billboard as BillboardType} from "@/types"
 
 interface BillboardProps{
-    data:BillboardType
+    data:BillboardType | null
 }
+
 
 const Billboard: React.FC<BillboardProps> = ({ data }) => {
     return (

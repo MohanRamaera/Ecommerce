@@ -11,7 +11,7 @@ import { ProductColumn } from "./columns";
 import { Button } from "@/components/ui/AdminButton";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "react-hot-toast";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import axios from "axios";
 import { AlertModal } from "@/components/modals/alert-modal";
@@ -25,7 +25,6 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [open, setOpen] = useState(false);
 
   const router = useRouter();
-  const params = useParams();
 
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);

@@ -8,13 +8,16 @@ export async function GET (
     try {
         if(!params.billboardId) {
             return new NextResponse("Billboard id is required", { status: 400 });
-        }
+        }     
+        console.log("bi",params)
 
         const billboard = await prismadb.billboard.findUnique({
             where: {
                 id: params.billboardId,
             }
         })
+
+        console.log("bi",billboard)
 
         return NextResponse.json(billboard);
     } catch (err) {
@@ -33,9 +36,6 @@ export async function PATCH (
 
         const { label, imageUrl } = body;
 
-        // if (!userId) {
-        //     return new NextResponse("Unauthenticated", { status: 401 })
-        // }
 
         if (!label) {
             return new NextResponse("Label is required", { status: 400 });
@@ -75,11 +75,6 @@ export async function DELETE (
     { params }: { params: { storeId: string, billboardId: string }}
 ) {
     try {
-        // const { userId } = auth();
-
-        // if (!userId) {
-        //     return new NextResponse("Unauthenticated", { status: 401 })
-        // }
 
         if(!params.billboardId) {
             return new NextResponse("Billboard id is required", { status: 400 });
