@@ -32,7 +32,7 @@ export default auth((req) => {
 
 
     
-    return NextResponse.next();
+
 })
  
 // Optionally, don't invoke Middleware on some paths
