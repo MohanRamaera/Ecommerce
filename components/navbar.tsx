@@ -18,12 +18,6 @@ const role=useCurrentRole()
 const user=useCurrentUser()
 const router=useRouter()
 
-const [showModal,setShowModal]=useState(false)
-
-const onClick=()=>{
-  setShowModal(!showModal)
-}
-
 
   return (
     <div className="border-b">
@@ -43,7 +37,7 @@ const onClick=()=>{
           <ShoppingCart />
           <NavbarActions />
           <Popover>
-  <PopoverTrigger> {user?.image?<div  className="rounded-full"> <img  className="rounded-full" height={40} width={} src={user.image} /></div>:<User />}</PopoverTrigger>
+  <PopoverTrigger> {user?.image?<div  className="rounded-full"> <img  className="rounded-full" height={40} width={40} src={user.image} /></div>:<User />}</PopoverTrigger>
   <PopoverContent className="cursor-pointer">
     <div  onClick={()=>{router.push("/myOrders")}}>
       My Orders 
