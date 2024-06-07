@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  // reactStrictMode: true,
   images: {
-    domains: ["www.candere.com","t3.ftcdn.net", "res.cloudinary.com","localhost", "picsum.photos","assets.angara.com"], // <== Domain name
+    domains: ["www.candere.com", "res.cloudinary.com","localhost", "picsum.photos","assets.angara.com"], // <== Domain name
   },
 };
 

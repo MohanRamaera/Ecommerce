@@ -4,7 +4,6 @@ import Billboard from "@/components/billboard";
 import Navbar from "@/components/navbar";
 import Container from "@/components/ui/container";
 import ProductList from "@/components/ui/product-list";
-import prismadb from "@/lib/prismadb";
 
 export const revalidate = 0;
 
