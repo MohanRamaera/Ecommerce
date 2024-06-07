@@ -38,14 +38,21 @@ const router=useRouter()
           <NavbarActions />
           <Popover>
   <PopoverTrigger> {user?.image?<div  className="rounded-full"> <img  className="rounded-full" height={40} width={40} src={user.image} /></div>:<User />}</PopoverTrigger>
-  <PopoverContent className="cursor-pointer">
+{ user? <PopoverContent className="cursor-pointer">
     <div  onClick={()=>{router.push("/myOrders")}}>
       My Orders 
     </div>
-    <div onClick={()=>{  logout()}}>
+    <div onClick={()=>{  logout();router.refresh()}}>
       SignOut
     </div>
-  </PopoverContent>
+  </PopoverContent> :
+  <PopoverContent className="cursor-pointer">
+  <div  onClick={()=>{router.push("/auth.login")}}>
+  Login
+  </div>
+ 
+</PopoverContent> 
+  }
 </Popover>
         </div>
       </div>
