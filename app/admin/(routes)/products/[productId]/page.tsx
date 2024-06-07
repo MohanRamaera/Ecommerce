@@ -16,13 +16,15 @@ const ProductPage = async ({
     },
   });
 
+  const categories=await prismadb.category.findMany({})
+
 
 
   return (
     <div className="flex-col">
       
       <div className="flex-1 p-8 pt-6 space-y-4">
-        <ProductForm initialData={product} />
+        <ProductForm initialData={product} categories={categories} />
       </div>
     </div>
   );

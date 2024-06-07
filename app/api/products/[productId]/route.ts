@@ -33,7 +33,7 @@ export async function PATCH(
   try {
     const body = await req.json();
 
-    const { name, price, images, isFeatured, isArchived } = body;
+    const { name, price, Image, isFeatured, isArchived } = body;
 
     if (!name) {
       return new NextResponse("Name is required", { status: 400 });
@@ -45,41 +45,41 @@ export async function PATCH(
 
     if (!isArchived) new NextResponse("Archived is required", { status: 400 });
 
-    // if (!images || !images.length) {
-    //   return new NextResponse("Image is required", { status: 400 });
-    // }
+    if (!Image || !Image.length) {
+      return new NextResponse("Image is required", { status: 400 });
+    }
 
     if (!params.productId) {
       return new NextResponse("Product id is required", { status: 400 });
     }
 
-    const product = await prismadb.product.update({
+    await prismadb.product.update({
       where: {
         id: params.productId,
       },
       data: {
         name,
-        // Image: {
-        //   deleteMany: {},
-        // },
+        Image: {
+          deleteMany: {},
+        },
         price,
         isFeatured,
         isArchived,
       },
     });
 
-    // const product = await prismadb.product.update({
-    //   where: {
-    //     id: params.productId,
-    //   },
-    //   data: {
-    //     Image: {
-    //       createMany: {
-    //         data: [...images.map((image: { url: string }) => image)],
-    //       },
-    //     },
-    //   },
-    // });
+    const product = await prismadb.product.update({
+      where: {
+        id: params.productId,
+      },
+      data: {
+        Image: {
+          createMany: {
+            data: [...Image.map((image: { url: string }) => image)],
+          },
+        },
+      },
+    });
 
     return NextResponse.json(product);
   } catch (err) {

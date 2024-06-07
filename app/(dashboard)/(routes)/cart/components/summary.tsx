@@ -1,8 +1,9 @@
 "use client";
-
+import { AddressForm } from "@/components/auth/address-form";
 import Button from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
+import { useCurrentUser } from "@/hooks/use-current-user";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import React from "react";
@@ -10,6 +11,7 @@ import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 
 const Summary = () => {
+  const user=useCurrentUser()
   const searchParams = useSearchParams();
   const items = useCart((state) => state.items);
   const removeAll = useCart((state) => state.removeAll);
@@ -29,12 +31,37 @@ const Summary = () => {
   }, [searchParams, removeAll]);
 
   const onCheckout = async () => {
-    console.log("items", items);
     const response = await axios.post(`api/checkout`, {
       productIds: items.map((item) => item.id),
+      userId:user?.id
+
+
     });
 
-    window.location = response.data.url;
+    // await SaveAddress(response.data.sessionID)
+
+
+    // const sessionData=await stripe.checkout.sessions.retrieve(response.data.sessionID);
+    // console.log(sessionData.payment_intent)
+    // const paymentIntent = await stripe.paymentIntents.retrieve(sessionData?.payment_intent);
+    // const billingDetails = paymentIntent?.charges.data[0].billing_details;
+    // console.log("bil",billingDetails)
+
+    // await prismadb.order.update({
+    //   where:{
+    //     id:order.id
+    //   },
+    //   data:{
+    //     address:`${session.customer_details?.name}$${session.customer_details?.email}$${session.customer_details?.address}`
+    //   }
+    // })
+
+    // window.location = `${response.data.url}?sessionId=${response.data.sessionID}`;
+    window.location=response.data.url
+
+
+
+
   };
 
   return (
@@ -46,6 +73,8 @@ const Summary = () => {
           <Currency value={totalPrice} />
         </div>
       </div>
+      {/* <h2 className="text-lg font-medium text-gray-900">Fill Your Address  Details</h2>
+      <AddressForm /> */}
       <Button
         disabled={items.length === 0}
         className="w-full mt-6"

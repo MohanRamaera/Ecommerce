@@ -4,8 +4,11 @@ export const getProducts = async () => {
   const products = await prismadb.product.findMany({
     include: {
       Image: true,
-      category:true
+      category:true,
     },
+    orderBy:{
+      createdAt:"desc"
+    }
   });
 
   return products

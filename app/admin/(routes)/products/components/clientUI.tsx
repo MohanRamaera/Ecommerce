@@ -21,10 +21,10 @@ export const ProductClientUI: React.FC<ProductDataProps> = ({ data }) => {
           title={`Products (${data?.length})`}
           description="Manage products for your store"
         />
-        {/* <Button onClick={() => router.push("/products/new")}>
+        <Button onClick={() => router.push("/admin/products/new")}>
           <Plus className="w-4 h-4 mr-2" />
           Add New Product
-        </Button> */}
+        </Button>
       </div>
 
       <Separator />

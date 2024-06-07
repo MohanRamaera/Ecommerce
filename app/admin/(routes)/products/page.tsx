@@ -2,16 +2,13 @@ import { ProductClientUI } from "./components/clientUI";
 import { ProductColumn } from "./components/columns";
 import { formatter } from "@/lib/utils";
 import { format } from "date-fns";
-import { getProducts } from "@/app/actions/get-products";
+import getProducts from "@/actions/get-products";
 import prismadb from "@/lib/prismadb";
 
 const ProductPageAdmin = async () => {
-  const products = await prismadb.product.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
 
+
+  const products= await getProducts()
   const formattedProducts: ProductColumn[] = products?.map((item) => ({
     id: item.id,
     name: item.name,

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import * as z from "zod";
-import { Image, Product } from "@prisma/client";
+import { Category, Image, Product } from "@prisma/client";
 import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/AdminButton";
 import { Separator } from "@/components/ui/separator";
@@ -34,23 +34,24 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 
 interface ProductFromProps {
-  initialData: Product | null;
-  //     & {
-  //     Image: Image[];
-  //   }
+  initialData: Product & {
+      Image: Image[];
+    }| null,
+    categories: Category[]
 }
 
 const formSchema = z.object({
   name: z.string().min(1),
-  //   Image: z.object({ url: z.string() }).array(),
+    Image: z.object({ url: z.string() }).array(),
   price: z.coerce.number().min(1),
+  categoryId: z.string().min(1),
   isFeatured: z.boolean().default(false).optional(),
   isArchived: z.boolean().default(false).optional(),
 });
 
 type ProductFormValues = z.infer<typeof formSchema>;
 
-export const ProductForm: React.FC<ProductFromProps> = ({ initialData }) => {
+export const ProductForm: React.FC<ProductFromProps> = ({ initialData,categories }) => {
   const params = useParams();
   const router = useRouter();
 
@@ -71,7 +72,8 @@ export const ProductForm: React.FC<ProductFromProps> = ({ initialData }) => {
         }
       : {
           name: "",
-          //   Image: [],
+          Image: [],
+          categoryId:"",
           price: 0,
           isFeatured: false,
           isArchived: false,
@@ -79,9 +81,11 @@ export const ProductForm: React.FC<ProductFromProps> = ({ initialData }) => {
   });
 
   const onSubmit = async (data: ProductFormValues) => {
+  
     try {
       setLoading(true);
       if (initialData) {
+
         await axios.patch(`/api/products/${params.productId}`, data);
       } else {
         await axios.post(`/api/products`, data);
@@ -138,9 +142,9 @@ export const ProductForm: React.FC<ProductFromProps> = ({ initialData }) => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full space-y-8"
         >
-          {/* <FormField
+          <FormField
             control={form.control}
-            name="images"
+            name="Image"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Background Image</FormLabel>
@@ -161,7 +165,7 @@ export const ProductForm: React.FC<ProductFromProps> = ({ initialData }) => {
                 <FormMessage />
               </FormItem>
             )}
-          /> */}
+          />
           <div className="grid grid-cols-3 gap-8">
             <FormField
               control={form.control}
@@ -198,6 +202,38 @@ export const ProductForm: React.FC<ProductFromProps> = ({ initialData }) => {
                 </FormItem>
               )}
             />
+              <FormField
+                            control={form.control} 
+                            name="categoryId"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormLabel>Category</FormLabel>
+                                    <Select
+                                        disabled={loading}
+                                        onValueChange={field.onChange}
+                                        value={field.value}
+                                        defaultValue={field.value}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue
+                                                    defaultValue={field.value}
+                                                    placeholder='Select a Category'
+                                                />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {categories.map(category => (
+                                                <SelectItem key={category.id} value={category.id}>
+                                                    {category.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
             <FormField
               control={form.control}
               name="isFeatured"
@@ -246,7 +282,7 @@ export const ProductForm: React.FC<ProductFromProps> = ({ initialData }) => {
           </Button>
         </form>
       </Form>
-      {/* <Separator /> */}
+      <Separator />
     </>
   );
 };

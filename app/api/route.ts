@@ -3,13 +3,14 @@ import prismadb from "@/lib/prismadb";
 
 export async function POST(
   req: Request,
-  { params }: { params: { storeId: string } }
 ) {
   try {
     const body = await req.json();
 
-    const { name, price, images, isFeatured, isArchived } = body;
+    console.log("1")
 
+    const { name, price, Image,categoryId, isFeatured, isArchived } = body;
+console.log("hereee")
     if (!name) {
       return new NextResponse("Name is required", { status: 400 });
     }
@@ -20,21 +21,19 @@ export async function POST(
 
     if (!isArchived) new NextResponse("Archived is required", { status: 400 });
 
-    if (!images || !images.length) {
+    if (!Image || !Image.length) {
       return new NextResponse("Image is required", { status: 400 });
     }
 
-    if (!params.storeId) {
-      return new NextResponse("Store Id is required", { status: 400 });
-    }
     const product = await prismadb.product.create({
       data: {
         name,
         Image: {
           createMany: {
-            data: [...images.map((image: { url: string }) => image)],
+            data: [...Image.map((image: { url: string }) => image)],
           },
         },
+        categoryId,
         price,
         isFeatured,
         isArchived,

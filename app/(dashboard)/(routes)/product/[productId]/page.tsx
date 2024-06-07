@@ -3,7 +3,6 @@ import Info from "@/components/info";
 import Container from "@/components/ui/container";
 import prismadb from "@/lib/prismadb";
 import React from "react";
-import { getProduct } from "@/app/actions/get-product";
 
 interface ProductPageProps {
   params: {
@@ -19,6 +18,7 @@ const ProductPage: React.FC<ProductPageProps> = async ({ params }) => {
     },
     include: {
       Image: true,
+      category:true
     },
   });
 

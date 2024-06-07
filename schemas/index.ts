@@ -22,3 +22,24 @@ export const RegisterSchema=z.object({
     })
 
 })
+
+
+export const AddressSchema=z.object({
+    name:z.string().min(1,{
+        message:"Name is Required"
+    }),
+    mobileNumber:z.number().min(10,{
+        message:"Mobile Number is Required"
+    }),
+    city:z.string().min(1,{
+        message:"City is Required"
+    }),
+    pinCode:z.number().min(1,{
+        message:"pinCode is Required"
+    }),
+    state:z.string().min(1,{
+        message:"State is Required"
+    }),
+  
+
+})

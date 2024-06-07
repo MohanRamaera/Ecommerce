@@ -4,6 +4,7 @@ import ModalProvider from "@/providers/modal-provider";
 import { ToasterProvider } from "@/providers/toast-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import Navbar from "@/components/navbar";
+import { RoleGate } from "@/components/role.gate";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +25,9 @@ export default function RootLayout({
           <ToasterProvider />
           <ModalProvider />
           <Navbar />
+          <RoleGate allowedRole="ADMIN" >
           {children}
+          </RoleGate>
         </ThemeProvider>
       </body>
     </html>

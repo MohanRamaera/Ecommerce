@@ -14,8 +14,7 @@ export async function OPTIONS() {
 }
 
 export async function POST(req: Request) {
-  console.log("jj");
-  const { productIds } = await req.json();
+  const { productIds,userId } = await req.json();
 
   if (!productIds || productIds.length === 0) {
     return new NextResponse("Product ids are required", { status: 400 });
@@ -47,6 +46,7 @@ export async function POST(req: Request) {
   const order = await prismadb.order.create({
     data: {
       isPaid: false,
+      userId,
       OrderItem: {
         create: productIds.map((productId: string) => ({
           Product: {
@@ -58,8 +58,6 @@ export async function POST(req: Request) {
       },
     },
   });
-
-  console.log("order");
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -76,8 +74,23 @@ export async function POST(req: Request) {
       },
     });
 
+    
+
+    await prismadb.order.update({
+      where:{
+        id:order.id
+      },
+      data:{
+        address: session.id
+      }
+    })
+
+
     return NextResponse.json(
-      { url: session.url },
+      { sessionID:session.id,
+         url: session.url
+        
+       },
       {
         headers: corsHeaders,
       }

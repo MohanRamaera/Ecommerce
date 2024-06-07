@@ -4,8 +4,28 @@ import MainNav from "@/components/main-nav";
 import { Logo } from "@/app/(dashboard)/_components/logo";
 import NavbarActions from "./ui/navbar-actions";
 import { useRouter } from "next/navigation";
+import { useCurrentRole } from "@/hooks/use-current-role";
+import Button from "./ui/button";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { useState } from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { logout } from "@/actions/logout";
 const Navbar = () => {
-  const router = useRouter();
+const role=useCurrentRole()
+const user=useCurrentUser()
+const router=useRouter()
+
+const [showModal,setShowModal]=useState(false)
+
+const onClick=()=>{
+  setShowModal(!showModal)
+}
+
+
   return (
     <div className="border-b">
       <div className="flex h-16 items-center px-4">
@@ -14,13 +34,27 @@ const Navbar = () => {
           <MainNav className="mx-6" />
         </div>
         <div className="ml-auto flex items-center space-x-4">
-          <h2 onClick={() => router.push("/admin/products")}>
-            {" "}
-            Go To Admin Dashboard
-          </h2>
+      {role==="ADMIN" && 
+      <h2 onClick={() => router.push("/admin")}>
+      {" "}
+      <Button>
+      Go To Admin Dashboard
+      </Button>
+    </h2>}
+          
           <ShoppingCart />
           <NavbarActions />
-          <User />
+          <Popover>
+  <PopoverTrigger> {user?.image?<div  className="rounded-full"> <img  className="rounded-full" height={40} width={40} src={user.image} /></div>:<User />}</PopoverTrigger>
+  <PopoverContent className="cursor-pointer">
+    <div  onClick={()=>{router.push("/myOrders")}}>
+      My Orders 
+    </div>
+    <div onClick={()=>{  logout()}}>
+      SignOut
+    </div>
+  </PopoverContent>
+</Popover>
         </div>
       </div>
     </div>

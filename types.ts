@@ -4,10 +4,8 @@ export interface Product {
   id: string;
   category: Category;
   name: string;
-  price: string;
+  price: Decimal;
   isFeatured: boolean;
-  size: Size;
-  color: Color;
   Image: Image[];
 }
 
@@ -28,7 +26,6 @@ export interface Billboard {
 export interface Category {
   id: string;
   name: string;
-  billboard: Billboard;
 }
 
 export interface Size {
