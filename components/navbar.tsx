@@ -1,6 +1,5 @@
 "use client";
 import { User, ShoppingCart } from "lucide-react";
-import MainNav from "@/components/main-nav";
 import { Logo } from "@/app/(dashboard)/_components/logo";
 import NavbarActions from "./ui/navbar-actions";
 import { useRouter } from "next/navigation";
@@ -31,7 +30,6 @@ const onClick=()=>{
       <div className="flex h-16 items-center px-4">
         <div>
           <Logo />
-          <MainNav className="mx-6" />
         </div>
         <div className="ml-auto flex items-center space-x-4">
       {role==="ADMIN" && 
@@ -45,7 +43,7 @@ const onClick=()=>{
           <ShoppingCart />
           <NavbarActions />
           <Popover>
-  <PopoverTrigger> {user?.image?<div  className="rounded-full"> <img  className="rounded-full" height={40} width={40} src={user.image} /></div>:<User />}</PopoverTrigger>
+  <PopoverTrigger> {user?.image?<div  className="rounded-full"> <img  className="rounded-full" height={40} width={} src={user.image} /></div>:<User />}</PopoverTrigger>
   <PopoverContent className="cursor-pointer">
     <div  onClick={()=>{router.push("/myOrders")}}>
       My Orders 
