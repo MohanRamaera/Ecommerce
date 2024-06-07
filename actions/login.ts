@@ -29,7 +29,6 @@ try{
 }catch(error){
 console.log("error",error)
     if (error instanceof AuthError){
-        console.log("-->>",error.type)
         switch(error.type){
             case "CredentialsSignin" :
                 return {error:"Invalid Credentials"}

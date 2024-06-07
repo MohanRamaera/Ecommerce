@@ -2,11 +2,11 @@
 import { User, ShoppingCart } from "lucide-react";
 import { Logo } from "@/app/(dashboard)/_components/logo";
 import NavbarActions from "./ui/navbar-actions";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCurrentRole } from "@/hooks/use-current-role";
 import Button from "./ui/button";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -17,6 +17,13 @@ const Navbar = () => {
 const role=useCurrentRole()
 const user=useCurrentUser()
 const router=useRouter()
+
+const pathName=usePathname()
+
+
+useEffect(()=>{
+user
+},[pathName])
 
 
   return (
@@ -42,7 +49,7 @@ const router=useRouter()
     <div  onClick={()=>{router.push("/myOrders")}}>
       My Orders 
     </div>
-    <div onClick={()=>{  logout();router.refresh()}}>
+    <div onClick={ ()=>{logout()}}>
       SignOut
     </div>
   </PopoverContent> :
