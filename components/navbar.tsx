@@ -47,7 +47,7 @@ const router=useRouter()
     </div>
   </PopoverContent> :
   <PopoverContent className="cursor-pointer">
-  <div  onClick={()=>{router.push("/auth.login")}}>
+  <div  onClick={()=>{router.push("/auth/login")}}>
   Login
   </div>
  
