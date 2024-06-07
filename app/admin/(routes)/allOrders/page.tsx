@@ -6,12 +6,14 @@ import { DataTable } from "@/components/ui/data-table";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
+import { useState } from "react";
 
 const allOrder = async () => {
   const allOrder = await getAllOrders();
 
   const formattedOrder:OrderColumn[] =await Promise.all(allOrder?.map(async (order) => {
     // Fetch the address data from Stripe for the given order
+    if (order.address){
     const orderData = await getAddressDataFromStripe(order.address);
     const lineItems=await getItemsDataFromStripe(order.address)
   
@@ -42,6 +44,7 @@ const allOrder = async () => {
       state: address?.state,
       createdAt: format(order.createdAt, "MMMM do, yyyy"),
     };
+  }
   }));
 
   return (
@@ -53,7 +56,8 @@ const allOrder = async () => {
       </div>
 
       <Separator />
-      <DataTable columns={columns} data={formattedOrder} searchKey="name" />
+{allOrder.length>0 && <DataTable columns={columns} data={formattedOrder} searchKey="name" /> }
+
     </>
   );
 };
