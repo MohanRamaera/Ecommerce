@@ -11,6 +11,7 @@ const HomePage = async () => {
   const products=await getProducts()
   const billboard = await getBillboard('60322adf-9b74-4db4-bd61-f0a01ef60b2a');
 
+
   return (
     <>
       <Navbar />

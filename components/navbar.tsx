@@ -13,18 +13,19 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { logout } from "@/actions/logout";
+import { useSession } from "next-auth/react";
 const Navbar = () => {
 const role=useCurrentRole()
 const user=useCurrentUser()
 const router=useRouter()
+const session=useSession()
 
 const pathName=usePathname()
 
 
 useEffect(()=>{
-user
+  router.refresh()
 },[pathName])
-
 
   return (
     <div className="border-b">
@@ -33,7 +34,7 @@ user
           <Logo />
         </div>
         <div className="ml-auto flex items-center space-x-4">
-      {role==="ADMIN" && 
+      {session.data?.user.role==="ADMIN" && 
       <h2 onClick={() => router.push("/admin")}>
       {" "}
       <Button>
@@ -44,8 +45,8 @@ user
           <ShoppingCart />
           <NavbarActions />
           <Popover>
-  <PopoverTrigger> {user?.image?<div  className="rounded-full"> <img  className="rounded-full" height={40} width={40} src={user.image} /></div>:<User />}</PopoverTrigger>
-{ user? <PopoverContent className="cursor-pointer">
+  <PopoverTrigger> {session.data?.user?.image?<div  className="rounded-full"> <img  className="rounded-full" height={40} width={40} src={user.image} /></div>:<User />}</PopoverTrigger>
+{session.data?.user.role? <PopoverContent className="cursor-pointer">
     <div  onClick={()=>{router.push("/myOrders")}}>
       My Orders 
     </div>
